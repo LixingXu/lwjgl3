@@ -214,6 +214,7 @@ public class Mandelbrot {
 					ctxProps
 						.put(APPLEGLSharing.CL_CONTEXT_PROPERTY_USE_CGL_SHAREGROUP_APPLE)
 						.put(CGLGetShareGroup(CGLGetCurrentContext()));
+					break;
 				default:
 					throw new IllegalStateException();
 			}
