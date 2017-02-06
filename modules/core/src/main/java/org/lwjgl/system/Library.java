@@ -28,7 +28,7 @@ import static org.lwjgl.system.Checks.*;
 public final class Library {
 
 	/** The LWJGL shared library name. */
-	public static final String JNI_LIBRARY_NAME = Configuration.LIBRARY_NAME.get(System.getProperty("os.arch").contains("64") ? "lwjgl" : "lwjgl32");
+	public static final String JNI_LIBRARY_NAME = Configuration.LIBRARY_NAME.get(Platform.get() != Platform.WINDOWS || System.getProperty("os.arch").contains("64") ? "lwjgl" : "lwjgl32");
 
 	private static final String JAVA_LIBRARY_PATH = "java.library.path";
 

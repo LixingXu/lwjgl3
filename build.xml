@@ -415,7 +415,7 @@
 			<!-- Include the classes.jar -->
 			<zipfileset dir="${bin.android}" includes="classes.jar"/>
 			<!-- Include all natives -->
-			<zipfileset dir="${lib}" includes="*.so" prefix="jni/arm64-v8a"/>
+			<zipfileset dir="${lib}" includes="*.so" prefix="jni/${build.arch}"/>
 		</zip>
 	</target>
 
