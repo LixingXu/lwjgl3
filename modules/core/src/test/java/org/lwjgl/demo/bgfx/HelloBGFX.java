@@ -66,6 +66,8 @@ public final class HelloBGFX {
 					platformData.ndt(NULL);
 					platformData.nwh(GLFWNativeWin32.glfwGetWin32Window(window));
 					break;
+				default:
+					throw new IllegalStateException();
 			}
 
 			platformData.context(NULL);

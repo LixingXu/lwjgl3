@@ -4,10 +4,21 @@
  */
 package org.lwjgl.system;
 
-import java.util.regex.Pattern;
+import java.util.regex.*;
 
 public enum Platform {
 
+	ANDROID("Android") {
+		private final Pattern SO = Pattern.compile("(?:^|/)lib\\w+[.]so(?:[.]\\d+){0,3}$");
+
+		@Override
+		String mapLibraryName(String name) {
+			if ( SO.matcher(name).find() )
+				return name;
+
+			return System.mapLibraryName(name);
+		}
+	},
 	LINUX("Linux") {
 		private final Pattern SO = Pattern.compile("(?:^|/)lib\\w+[.]so(?:[.]\\d+){0,3}$");
 
@@ -47,7 +58,9 @@ public enum Platform {
 		if ( osName.startsWith("Windows") )
 			PLATFORM = Platform.WINDOWS;
 		else if ( osName.startsWith("Linux") || osName.startsWith("FreeBSD") || osName.startsWith("SunOS") || osName.startsWith("Unix") )
-			PLATFORM = Platform.LINUX;
+			PLATFORM = System.getProperty("java.vendor").contains("Android")
+				? Platform.ANDROID
+				: Platform.LINUX;
 		else if ( osName.startsWith("Mac OS X") || osName.startsWith("Darwin") )
 			PLATFORM = Platform.MACOSX;
 		else

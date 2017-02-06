@@ -6,6 +6,7 @@ package org.lwjgl.opengles;
 
 import org.lwjgl.egl.EGL;
 import org.lwjgl.system.*;
+import org.lwjgl.system.MemoryStack;
 
 import java.nio.ByteBuffer;
 import java.nio.IntBuffer;
@@ -77,6 +78,9 @@ public final class GLES {
 	public static void create() {
 		SharedLibrary GLES;
 		switch ( Platform.get() ) {
+			case ANDROID:
+				GLES = Library.loadNative(GLES.class, Configuration.OPENGLES_LIBRARY_NAME, "libGLESv3.so", "libGLESv2.so");
+				break;
 			case LINUX:
 				GLES = Library.loadNative(GLES.class, Configuration.OPENGLES_LIBRARY_NAME, "libGLESv2.so.2");
 				break;

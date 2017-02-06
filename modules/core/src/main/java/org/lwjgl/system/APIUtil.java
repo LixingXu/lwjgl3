@@ -102,6 +102,7 @@ public final class APIUtil {
 		switch ( Platform.get() ) {
 			case WINDOWS:
 				return new WindowsLibrary(name);
+			case ANDROID:
 			case LINUX:
 				return new LinuxLibrary(name);
 			case MACOSX:
