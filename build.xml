@@ -104,6 +104,7 @@
 	<target name="clean-java" description="Deletes Java binary files produced by this script">
 		<delete dir="${bin.core}"/>
 		<delete dir="${bin.tests}"/>
+		<delete dir="${bin.android}" if:set="platform.android"/>
 	</target>
 
 	<target name="clean-native" description="Deletes native binary files produced by this script">
@@ -130,7 +131,10 @@
 		<delete dir="${src.generated.native}"/>
 	</target>
 
-	<target name="all" description="Builds LWJGL and runs the tests" depends="compile-templates, tests"/>
+	<target name="all" description="Builds LWJGL and runs the tests" depends="compile-templates">
+		<antcall target="tests" unless:set="platform.android"/>
+		<antcall target="aar" if:set="platform.android"/>
+	</target>
 
 	<target name="-compile-generator" depends="init">
 		<local name="generator-uptodate"/>
@@ -371,6 +375,9 @@
 
 			<patternset refid="excluded.sources.withCore"/>
 			<patternset refid="excluded.sources"/>
+
+			<!-- Unsupported API protection -->
+			<compilerarg value="-Xbootclasspath:${env.ANDROID_SDK_HOME}/platforms/android-${android.platform}/android.jar" if:set="platform.android"/>
 
 			<!-- Supresses internal API (e.g. Unsafe) usage warnings -->
 			<compilerarg value="-XDignore.symbol.file=true"/>
