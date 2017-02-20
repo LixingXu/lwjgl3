@@ -368,10 +368,14 @@
 			<src>
 				<pathelement path="${src.core}"/>
 				<pathelement path="${src.generated.java}"/>
+				<pathelement path="${src.core}/../android" if:set="platform.android"/>
 			</src>
 
-			<include name="**/*.java"/>
+			<include name="org/lwjgl/**/*.java"/>
 			<exclude name="**/package-info.java"/>
+
+			<include name="lang/invoke/*.java" if:set="platform.android"/>
+			<include name="sun/misc/Unsafe.java" if:set="platform.android"/>
 
 			<patternset refid="excluded.sources.withCore"/>
 			<patternset refid="excluded.sources"/>
@@ -393,6 +397,9 @@
 			<sysproperty key="retrolambda.classpath" value="${bin.core}"/>
 			<sysproperty key="retrolambda.outputDir" value="${bin.android.classes}"/>
 		</java>
+
+		<delete dir="${bin.android.classes}/java"/>
+		<delete dir="${bin.android.classes}/sun"/>
 	</target>
 
 	<target name="aar" description="Builds the Android archive" depends="retrolambda, compile-native">

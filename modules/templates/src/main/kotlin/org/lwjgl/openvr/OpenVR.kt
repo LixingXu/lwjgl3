@@ -41,7 +41,6 @@ val OPENVR_FNTABLE_BINDING: APIBinding = Generator.register(object : APIBinding(
 	init {
 		javaImport(
 			"java.nio.*",
-			"java.util.function.*",
 			"org.lwjgl.*",
 			"static org.lwjgl.openvr.VR.*",
 			"static org.lwjgl.system.MemoryStack.*",
@@ -95,16 +94,18 @@ val OPENVR_FNTABLE_BINDING: APIBinding = Generator.register(object : APIBinding(
 		OpenVR.token = token;
 """)
 		interfaces.forEach {
-			print("\n\t\t${it.capabilitiesField} = getGenericInterface(I${it.className}_Version, ${it.capabilitiesClass}::new);")
+			print("\n\t\t${it.capabilitiesField} = getGenericInterface(I${it.className}_Version, ${it.capabilitiesClass}.class);")
 		}
 		print("""
 	}
 
-	private static <T> T getGenericInterface(String interfaceNameVersion, LongFunction<T> supplier) {
+	private static <T> T getGenericInterface(String interfaceNameVersion, Class<T> ivrClass) {
 		try ( MemoryStack stack = stackPush() ) {
 			IntBuffer peError = stack.mallocInt(1);
 			long ivr = VR_GetGenericInterface("FnTable:" + interfaceNameVersion, peError);
-			return ivr != NULL && peError.get(0) == EVRInitError_VRInitError_None ? supplier.apply(ivr) : null;
+			return ivr != NULL && peError.get(0) == EVRInitError_VRInitError_None ? ivrClass.newInstance() : null;
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
 
