@@ -9,6 +9,7 @@ import org.lwjgl.PointerBuffer;
 
 import java.lang.reflect.Field;
 import java.util.*;
+import java.util.function.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -126,7 +127,10 @@ public final class ThreadLocalUtil {
 
 	public static PointerBuffer getAddressesFromCapabilities(Object caps) {
 		List<Field> functions = Stream.of(caps.getClass().getFields())
-			.filter(f -> f.getType() == long.class)
+			.filter(new Predicate<Field>() {
+				@Override
+				public boolean test(Field f) {return f.getType() == long.class;}
+			})
 			.collect(Collectors.toList());
 
 		PointerBuffer addresses = BufferUtils.createPointerBuffer(functions.size());
