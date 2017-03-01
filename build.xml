@@ -202,15 +202,6 @@
 			</and>
 		</condition>
 
-		<lwjgl.javac
-			destdir="${bin.templates}"
-
-			srcdir="${src.templates}/java"
-			includes="android/view/**"
-
-			taskname="javac: Template Stubs"
-		/>
-
 		<echo message="Compiling Kotlin templates. This will take 1-2 minutes..." level="info" taskname="Templates" unless:set="templates-uptodate"/>
 		<kotlinc moduleName="Templates" output="${bin.templates}" printVersion="true" unless:set="templates-uptodate">
 			<classpath>
@@ -221,6 +212,8 @@
 			<compilerarg value="-Xno-call-assertions"/>
 			<compilerarg value="-Xno-param-assertions"/>
 			<compilerarg value="-Xreport-perf"/>
+
+			<src path="${src.templates}/android"/>
 
             <src path="${src.templates.kotlin}/org/lwjgl/assimp" if:true="${binding.assimp}"/>
 			<src path="${src.templates.kotlin}/org/lwjgl/bgfx" if:true="${binding.bgfx}"/>
