@@ -425,8 +425,6 @@
 		<jar destfile="${bin.android}/classes.jar" level="9" index="true" indexmetainf="true">
 			<fileset dir="${bin.android.classes}">
  				<include name="org/lwjgl/**"/>
-				<include name="libcore/io/**"/>
-				<include name="sun/misc/**"/>
 			</fileset>
 		</jar>
 
